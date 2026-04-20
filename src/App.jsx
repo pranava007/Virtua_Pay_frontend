@@ -6,13 +6,22 @@ import SettingsPage from "./pages/SettingsPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { getMe } from "./services/api";
 import { LayoutDashboard, History, Settings, CreditCard, Sun, Moon, LogOut, User as UserIcon, Package } from "lucide-react";
 import { Toaster } from "react-hot-toast";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "./redux/slices/authSlice";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import PaymentPage from "./pages/PaymentPage";
+
+
 
 function AppContent() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
+
+    const user = useSelector((state) => state.auth.user);
+    const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,33 +33,16 @@ function AppContent() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      if (token && !user) {
-        try {
-          const { data } = await getMe();
-          setUser(data);
-          localStorage.setItem("user", JSON.stringify(data));
-        } catch (err) {
-          console.error("Auth verification failed", err);
-          handleLogout();
-        }
-      }
-    };
-    fetchUser();
-  }, []);
+ 
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setUser(null);
-    window.location.href = "/login";
-  };
+  dispatch(logout());
+  navigate("/login");
+};
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-white font-sans transition-colors duration-300">
@@ -133,6 +125,12 @@ function AppContent() {
           <Route path="/" element={<ProductsPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+
+           <Route path="/pay" element={<PaymentPage />} />
+
+
+
+
           <Route 
             path="/history" 
             element={
@@ -149,6 +147,8 @@ function AppContent() {
               </ProtectedRoute>
             } 
           />
+
+
         </Routes>
       </main>
     </div>
@@ -157,9 +157,9 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <Provider store={store}>
+      <App />
+    </Provider>
   );
 }
 

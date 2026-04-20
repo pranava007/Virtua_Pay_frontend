@@ -3,6 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { login } from "../services/api";
 import { Mail, Lock, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../redux/slices/authSlice";
 
 const LoginPage = () => {
     const [email, setEmail] = useState("");
@@ -10,6 +12,7 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,19 +21,29 @@ const LoginPage = () => {
 
         try {
             const { data } = await login({ email, password });
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify({ 
-                _id: data._id,
-                username: data.username, 
-                email: data.email,
-                role: data.role 
-            }));
+            dispatch(
+                loginSuccess({
+                    user: {
+                    _id: data._id,
+                    username: data.username,
+                    email: data.email,
+                    role: data.role,
+                    },
+                    token: data.token,
+                })
+                );
+
+                toast.success("Welcome back, " + data.username + "!");
+
+                navigate("/");
+                    // navigate("/");
             
-            toast.success("Welcome back, " + data.username + "!");
+            
+            // toast.success("Welcome back, " + data.username + "!");
             
             // Dispatch a custom event to update App.jsx state if needed 
             // or just navigate and let App.jsx handle it on mount/render
-            window.location.href = "/"; 
+            // window.location.href = "/"; 
         } catch (err) {
             setError(err.response?.data?.error || "Login failed. Please check your credentials.");
         } finally {

@@ -3,36 +3,58 @@ import { useNavigate, Link } from "react-router-dom";
 import { register } from "../services/api";
 import { User, Mail, Lock, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../redux/slices/authSlice";
+
 
 const RegisterPage = () => {
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
-    const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setError("");
+     const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-        try {
-            const { data } = await register({ username, email, password });
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify({ 
-                _id: data._id,
-                username: data.username, 
-                email: data.email,
-                role: data.role 
-            }));
-            toast.success("Registration successful!");
-            window.location.href = "/";
-        } catch (err) {
-            setError(err.response?.data?.error || "Registration failed. Please try again.");
-        } finally {
-            setLoading(false);
-        }
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const { data } = await register({ username, email, password });
+
+      // ✅ Redux update
+      dispatch(
+        loginSuccess({
+          user: {
+            _id: data._id,
+            username: data.username,
+            email: data.email,
+            role: data.role,
+          },
+          token: data.token,
+        })
+      );
+
+      // ✅ success message
+      toast.success("Registration successful!");
+
+      // ✅ SPA navigation (NO reload)
+      navigate("/");
+
+    } catch (err) {
+      setError(
+        err.response?.data?.error || "Registration failed. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+
+    
+
     };
 
     return (
