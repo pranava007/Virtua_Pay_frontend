@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
-import ProductsPage from "./pages/ProductsPage";
-import HistoryPage from "./pages/HistoryPage";
+// import ProductsPage from "./pages/ProductsPage";
+// import HistoryPage from "./pages/HistoryPage";
 import SettingsPage from "./pages/SettingsPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
@@ -122,7 +122,7 @@ function AppContent() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Routes>
-          <Route path="/" element={<ProductsPage />} />
+          {/* <Route path="/" element={<ProductsPage />} /> */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
@@ -131,14 +131,14 @@ function AppContent() {
 
 
 
-          <Route 
+          {/* <Route 
             path="/history" 
             element={
               <ProtectedRoute>
                 <HistoryPage />
               </ProtectedRoute>
             } 
-          />
+          /> */}
           <Route 
             path="/settings" 
             element={
