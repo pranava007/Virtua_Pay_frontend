@@ -8,28 +8,38 @@ import RegisterPage from "./pages/RegisterPage";
 import PaymentPage from "./pages/PaymentPage";
 import SettingsPage from "./pages/SettingsPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
-    <Provider store={store}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/pay" element={<PaymentPage />} />
+  <Routes>
+  {/* Common */}
+  <Route path="/login" element={<LoginPage />} />
+  <Route path="/register" element={<RegisterPage />} />
 
-          <Route
-            path="/settings"
-            element={
-              <ProtectedRoute roles={["admin"]}>
-                <SettingsPage />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </Router>
-    </Provider>
+  {/* USER */}
+  <Route path="/" element={<HomePage />} />
+  <Route path="/history" element={<HistoryPage />} />
+
+  {/* ADMIN */}
+  <Route 
+    path="/admin" 
+    element={
+      <ProtectedRoute roles={["admin"]}>
+        <AdminDashboard />
+      </ProtectedRoute>
+    } 
+  />
+
+  <Route 
+    path="/settings" 
+    element={
+      <ProtectedRoute roles={["admin"]}>
+        <SettingsPage />
+      </ProtectedRoute>
+    } 
+  />
+</Routes>
   );
 }
 
