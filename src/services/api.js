@@ -34,11 +34,10 @@ export const getMe = () =>
 
 // ================= ADMIN (GATEWAY CONFIG) =================
 export const getGatewayConfig = () =>
-  api.get("/payment/config");
+  api.get("/admin/config"); // ✅ change
 
 export const updateGatewayConfig = (activeGateway) =>
-  api.patch("/payment/config", { activeGateway });
-
+  api.patch("/admin/config", { activeGateway }); // ✅ change
 
 // ================= PAYMENT =================
 
