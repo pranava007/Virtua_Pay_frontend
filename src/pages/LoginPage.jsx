@@ -35,12 +35,13 @@ const LoginPage = () => {
 
                 toast.success("Welcome back, " + data.username + "!");
 
-             if (data.user.role === "admin") {
-                    navigate("/admin");   // 👑 admin dashboard
-                    } else {
-                    navigate("/");        // 👤 user home
-                    }
-            
+                 
+                // ✅ FIX HERE
+                if (data.role === "admin") {
+                navigate("/admin");
+                } else {
+                navigate("/");
+                }
             
             // toast.success("Welcome back, " + data.username + "!");
             
