@@ -1,6 +1,8 @@
 import axios from "axios";
+import { store } from "../redux/store";
 
-const API_URL = "https://virtua-pay-backend.onrender.com/";
+// const API_URL = "https://virtua-pay-backend.onrender.com/";
+const API_URL = "http://localhost:7000";
 
 const api = axios.create({
   baseURL: API_URL
@@ -9,7 +11,8 @@ const api = axios.create({
 // 🔐 JWT Token attach
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const state = store.getState();
+    const token = state.auth.token;
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -19,6 +22,7 @@ api.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
 
 
 // ================= AUTH =================
@@ -32,12 +36,21 @@ export const getMe = () =>
   api.get("/auth/me");
 
 
-// ================= ADMIN (GATEWAY CONFIG) =================
+// ================= ADMIN (CONFIG) =================
 export const getGatewayConfig = () =>
-  api.get("/admin/config"); // ✅ change
+  api.get("/admin/config");
 
-export const updateGatewayConfig = (activeGateway) =>
-  api.patch("/admin/config", { activeGateway }); // ✅ change
+export const updateGatewayConfig = (configData) =>
+  api.patch("/admin/config", configData);
+
+export const getExternalConfig = () =>
+  api.get("/admin/external-config");
+
+export const updateExternalConfig = (configData) =>
+  api.patch("/admin/external-config", configData);
+
+export const getMerchantStats = () =>
+  api.get("/admin/merchant-stats");
 
 // ================= PAYMENT =================
 
@@ -49,5 +62,32 @@ export const createPayment = (orderId) =>
 export const verifyPayment = (data) =>
   api.post("/payment/verify-payment", data);
 
+
+// ================= PRODUCTS =================
+export const getProducts = () =>
+  api.get("/products");
+
+export const createProduct = (productData) =>
+  api.post("/products", productData);
+
+export const deleteProduct = (id) =>
+  api.delete(`/products/${id}`);
+
+// ================= ORDERS =================
+export const createOrder = (orderData) =>
+  api.post("/orders", orderData);
+
+export const getMyOrders = () =>
+  api.get("/orders/my-orders");
+
+// ================= PAYOUTS =================
+export const getPayoutMerchants = () =>
+  api.get("/payouts/merchants");
+
+export const updatePayoutConfig = (payoutData) =>
+  api.post("/payouts/config", payoutData);
+
+export const processPayout = (payoutData) =>
+  api.post("/payouts/process", payoutData);
 
 export default api;

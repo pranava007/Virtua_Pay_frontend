@@ -1,80 +1,98 @@
 import { Link } from "react-router-dom";
-import { Settings, CreditCard, BarChart3 } from "lucide-react";
+import { Settings, CreditCard, LayoutDashboard, History, ShoppingBag } from "lucide-react";
+import MerchantStats from "../components/MerchantStats";
 
 const AdminDashboard = () => {
   return (
-    <div className="p-6 space-y-8">
+    <div className="max-w-7xl mx-auto py-12 px-6 space-y-12">
 
       {/* HEADER */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-          Admin Dashboard 👑
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
-          Manage your payment system and monitor transactions.
-        </p>
-      </div>
-
-      {/* STATS CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-        <div className="p-6 bg-white dark:bg-gray-900 rounded-2xl border shadow-sm">
-          <h2 className="text-sm text-gray-500">Total Orders</h2>
-          <p className="text-2xl font-bold mt-2">--</p>
-        </div>
-
-        <div className="p-6 bg-white dark:bg-gray-900 rounded-2xl border shadow-sm">
-          <h2 className="text-sm text-gray-500">Revenue</h2>
-          <p className="text-2xl font-bold mt-2">₹ --</p>
-        </div>
-
-        <div className="p-6 bg-white dark:bg-gray-900 rounded-2xl border shadow-sm">
-          <h2 className="text-sm text-gray-500">Active Gateway</h2>
-          <p className="text-2xl font-bold mt-2">--</p>
-        </div>
-
-      </div>
-
-      {/* ACTION CARDS */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        <Link
-          to="/settings"
-          className="flex items-center gap-4 p-6 bg-yellow-500 hover:bg-yellow-400 text-black rounded-2xl transition-all shadow-md"
-        >
-          <Settings className="w-6 h-6" />
-          <div>
-            <h3 className="font-bold text-lg">Gateway Settings</h3>
-            <p className="text-sm">Manage payment gateways</p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-yellow-600">
+            <LayoutDashboard className="w-5 h-5" />
+            <span className="text-sm font-black uppercase tracking-widest">Super Admin Console</span>
           </div>
-        </Link>
+          <h1 className="text-4xl font-black text-gray-900 tracking-tight">Command Center</h1>
+          <p className="text-gray-500 text-lg font-medium">Monitor your global payment ecosystem and merchant performance.</p>
+        </div>
 
-        <Link
-          to="/history"
-          className="flex items-center gap-4 p-6 bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 rounded-2xl transition-all shadow-md"
-        >
-          <CreditCard className="w-6 h-6" />
-          <div>
-            <h3 className="font-bold text-lg">View Orders</h3>
-            <p className="text-sm">Check all transactions</p>
-          </div>
-        </Link>
-
+        <div className="flex gap-4">
+          <Link
+            to="/settings"
+            className="flex items-center gap-2 px-6 py-3 bg-yellow-500 hover:bg-yellow-400 text-black font-bold rounded-2xl transition-all shadow-lg shadow-yellow-500/20"
+          >
+            <Settings className="w-5 h-5" />
+            Config
+          </Link>
+          <Link
+            to="/products"
+            className="flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-black text-white font-bold rounded-2xl transition-all shadow-lg shadow-gray-900/10"
+          >
+            <ShoppingBag className="w-5 h-5" />
+            Catalog
+          </Link>
+        </div>
       </div>
 
-      {/* ANALYTICS PLACEHOLDER */}
-      <div className="p-6 bg-white dark:bg-gray-900 rounded-2xl border shadow-sm">
-        <div className="flex items-center gap-2 mb-4">
-          <BarChart3 className="w-5 h-5 text-yellow-500" />
-          <h2 className="font-bold text-lg">Analytics (Coming Soon)</h2>
+      {/* MAIN ANALYTICS SECTION */}
+      <MerchantStats />
+
+      {/* QUICK ACTIONS */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="group bg-gradient-to-br from-gray-900 to-black p-8 rounded-[2.5rem] text-white space-y-6 relative overflow-hidden">
+          <div className="relative z-10 space-y-4">
+            <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center backdrop-blur-xl">
+              <History className="w-8 h-8 text-yellow-500" />
+            </div>
+            <div>
+              <h3 className="text-2xl font-black italic uppercase tracking-tighter">Transaction Logs</h3>
+              <p className="text-gray-400 font-medium">Deep dive into every payment attempt across the platform.</p>
+            </div>
+            <button className="px-6 py-3 bg-white text-black font-black text-sm rounded-xl hover:bg-yellow-500 transition-colors uppercase">
+              View All Logs
+            </button>
+          </div>
+          <div className="absolute -right-10 -bottom-10 w-48 h-48 bg-yellow-500/20 blur-[80px] rounded-full" />
         </div>
-        <p className="text-gray-500 text-sm">
-          Graphs and reports will be displayed here.
-        </p>
+
+        <div className="group bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-100/50 space-y-6 flex flex-col justify-between">
+          <div className="space-y-4">
+            <div className="w-14 h-14 bg-yellow-50 rounded-2xl flex items-center justify-center">
+              <CreditCard className="w-8 h-8 text-yellow-600" />
+            </div>
+            <div>
+              <h3 className="text-2xl font-black text-gray-900">Payment Infrastructure</h3>
+              <p className="text-gray-500 font-medium">Manage default fallback gateways and system-wide API limits.</p>
+            </div>
+          </div>
+          <Link to="/settings" className="text-yellow-600 font-black text-sm uppercase hover:underline flex items-center gap-2">
+            System Config <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
 
     </div>
   );
 };
+
+function ArrowRight({ className }) {
+  return (
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      width="24" 
+      height="24" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="3" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      className={className}
+    >
+      <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+    </svg>
+  );
+}
 
 export default AdminDashboard;
