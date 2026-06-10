@@ -2,7 +2,7 @@ import axios from "axios";
 import { store } from "../redux/store";
 
 // const API_URL = "https://virtua-pay-backend.onrender.com/";
-const API_URL = "https://deve.virtuapayments.com";
+const API_URL = "https://deve.virtuapayments.com/api";
 
 const api = axios.create({
   baseURL: API_URL
